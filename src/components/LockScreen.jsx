@@ -14,40 +14,48 @@ export default function LockScreen({ onUnlock }) {
   });
 
   return (
-    <div className="h-full bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 flex flex-col items-center justify-between py-12 text-white">
+    <div className="h-full bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#0f172a] flex flex-col items-center justify-between py-10 text-white relative overflow-hidden">
+      {/* Ambient glow orbs */}
+      <div className="absolute top-20 -left-20 w-60 h-60 bg-blue-500/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-40 -right-20 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl" />
+
       {/* Time & Date */}
-      <div className="flex flex-col items-center pt-16">
-        <h1 className="text-7xl font-light tracking-tight">{time}</h1>
-        <p className="text-base font-light text-white/70 mt-2">{date}</p>
+      <div className="flex flex-col items-center pt-14 relative z-10">
+        <h1 className="text-[72px] font-extralight tracking-tight leading-none">{time}</h1>
+        <p className="text-[15px] font-light text-white/50 mt-3 tracking-wide">{date}</p>
       </div>
 
       {/* Notifications preview */}
-      <div className="flex flex-col gap-2 w-full px-6">
-        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-3 px-4">
-          <div className="flex items-center gap-2 mb-1">
-            <div className="w-5 h-5 rounded-full bg-green-400 flex items-center justify-center text-[10px] font-bold">W</div>
-            <span className="text-xs text-white/60">WhatsApp · 2m ago</span>
+      <div className="flex flex-col gap-2.5 w-full px-5 relative z-10">
+        <div className="bg-white/[0.07] backdrop-blur-xl rounded-[18px] p-3.5 px-4 border border-white/[0.06]">
+          <div className="flex items-center gap-2.5 mb-1.5">
+            <div className="w-[22px] h-[22px] rounded-full bg-[#25d366] flex items-center justify-center">
+              <span className="text-[9px] font-bold text-white">W</span>
+            </div>
+            <span className="text-[11px] text-white/40 font-medium">WhatsApp · 2m ago</span>
           </div>
-          <p className="text-sm text-white/90">3 new messages from Team</p>
+          <p className="text-[13px] text-white/85 font-normal leading-snug">3 new messages from Team</p>
         </div>
-        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-3 px-4">
-          <div className="flex items-center gap-2 mb-1">
-            <div className="w-5 h-5 rounded-full bg-blue-400 flex items-center justify-center text-[10px] font-bold">G</div>
-            <span className="text-xs text-white/60">Gmail · 15m ago</span>
+        <div className="bg-white/[0.07] backdrop-blur-xl rounded-[18px] p-3.5 px-4 border border-white/[0.06]">
+          <div className="flex items-center gap-2.5 mb-1.5">
+            <div className="w-[22px] h-[22px] rounded-full bg-[#4285f4] flex items-center justify-center">
+              <span className="text-[9px] font-bold text-white">G</span>
+            </div>
+            <span className="text-[11px] text-white/40 font-medium">Gmail · 15m ago</span>
           </div>
-          <p className="text-sm text-white/90">Weekly report ready for review</p>
+          <p className="text-[13px] text-white/85 font-normal leading-snug">Weekly report ready for review</p>
         </div>
       </div>
 
       {/* Unlock button */}
       <button
         onClick={onUnlock}
-        className="flex flex-col items-center gap-2 group"
+        className="flex flex-col items-center gap-3 group relative z-10"
       >
-        <div className="p-4 rounded-full bg-white/10 backdrop-blur-sm group-hover:bg-white/20 transition-all duration-300 group-hover:scale-110">
-          <Fingerprint size={32} className="text-white/80 group-hover:text-white animate-pulse-soft" />
+        <div className="p-4 rounded-full bg-white/[0.08] backdrop-blur-sm group-hover:bg-white/[0.15] transition-all duration-400 group-hover:scale-105 animate-glow">
+          <Fingerprint size={30} className="text-white/70 group-hover:text-white transition-colors duration-300 animate-pulse-soft" />
         </div>
-        <span className="text-xs text-white/50">Tap to unlock</span>
+        <span className="text-[11px] text-white/30 font-medium tracking-wider uppercase">Tap to unlock</span>
       </button>
     </div>
   );

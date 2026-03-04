@@ -19,9 +19,21 @@ import WeeklyInsights from './components/WeeklyInsights';
   7. insights    – Weekly insights dashboard
 */
 
-const DRIFT_TRIGGER = 10;       // seconds in prototype → simulates 10 min
-const LIMIT_TRIGGER = 15;       // seconds in prototype → simulates 15 min
-const TIME_MULTIPLIER = 60;     // 1 real second = 60 simulated seconds
+const DRIFT_TRIGGER = 10;
+const LIMIT_TRIGGER = 15;
+const TIME_MULTIPLIER = 60;
+
+const STEPS = ['lock', 'intent', 'feed', 'drift', 'alternatives', 'confirmation', 'insights'];
+
+const stepLabels = {
+  lock: 'Tap fingerprint to unlock',
+  intent: 'Select your intent',
+  feed: `Browsing... (nudge at ${DRIFT_TRIGGER}s, limit at ${LIMIT_TRIGGER}s)`,
+  drift: 'Drift detected — choose an action',
+  alternatives: 'Usage limit reached — explore alternatives',
+  confirmation: 'Great choice!',
+  insights: 'Weekly insights dashboard',
+};
 
 export default function App() {
   const [screen, setScreen] = useState('lock');
@@ -32,7 +44,6 @@ export default function App() {
   const [driftDismissed, setDriftDismissed] = useState(false);
   const timerRef = useRef(null);
 
-  // Start the session timer when entering the feed
   const startTimer = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
@@ -47,12 +58,10 @@ export default function App() {
     }
   }, []);
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => stopTimer();
   }, [stopTimer]);
 
-  // Watch session time for triggers
   useEffect(() => {
     if (screen === 'feed' && sessionTime >= LIMIT_TRIGGER && driftDismissed) {
       stopTimer();
@@ -63,7 +72,6 @@ export default function App() {
     }
   }, [sessionTime, screen, driftDismissed, stopTimer]);
 
-  // Handlers
   const handleUnlock = () => setScreen('intent');
 
   const handleIntentSelect = (option) => {
@@ -138,35 +146,35 @@ export default function App() {
     }
   };
 
-  // Compute simulated display time (in seconds)
   const simulatedTime = sessionTime * TIME_MULTIPLIER;
-
   const showNav = !['lock', 'intent'].includes(screen);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gradient-to-br from-slate-200 via-gray-200 to-slate-300">
+    <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-[#eceef0]">
       {/* Title */}
-      <div className="mb-6 text-center">
-        <h1 className="text-2xl font-bold text-gray-800 tracking-tight">
-          ✨ Intent Assist
-        </h1>
-        <p className="text-sm text-gray-500 mt-1">Digital Wellbeing Prototype</p>
+      <div className="mb-7 text-center">
+        <div className="flex items-center justify-center gap-2">
+          <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
+            <span className="text-white text-sm">✦</span>
+          </div>
+          <h1 className="text-[22px] font-bold text-gray-800 tracking-tight">
+            Intent Assist
+          </h1>
+        </div>
+        <p className="text-[12px] text-gray-400 mt-1.5 font-medium tracking-wide">Digital Wellbeing Prototype</p>
       </div>
 
       <PhoneFrame activeTab={activeTab} onTabChange={handleTabChange} showNav={showNav}>
-        {/* Lock Screen */}
         {screen === 'lock' && (
           <LockScreen onUnlock={handleUnlock} />
         )}
 
-        {/* Intent Prompt (overlaid on home) */}
         {screen === 'intent' && (
-          <div className="h-full bg-surface relative">
-            {/* Home screen background */}
-            <div className="px-5 pt-6">
-              <p className="text-sm text-text-secondary">Good {getGreeting()},</p>
-              <h2 className="text-xl font-semibold text-text">Welcome back 👋</h2>
-              <div className="grid grid-cols-4 gap-4 mt-6">
+          <div className="h-full bg-[#f8f9fa] relative">
+            <div className="px-5 pt-5">
+              <p className="text-[13px] text-text-secondary/70 font-medium">Good {getGreeting()},</p>
+              <h2 className="text-[19px] font-semibold text-text mt-0.5">Welcome back 👋</h2>
+              <div className="grid grid-cols-4 gap-x-5 gap-y-4 mt-6">
                 {[
                   { emoji: '💬', name: 'Messages' },
                   { emoji: '📷', name: 'Camera' },
@@ -177,11 +185,11 @@ export default function App() {
                   { emoji: '📞', name: 'Phone' },
                   { emoji: '⚙️', name: 'Settings' },
                 ].map((app) => (
-                  <div key={app.name} className="flex flex-col items-center gap-1">
-                    <div className="w-12 h-12 rounded-2xl bg-white shadow-sm flex items-center justify-center text-xl">
+                  <div key={app.name} className="flex flex-col items-center gap-[6px]">
+                    <div className="w-[50px] h-[50px] rounded-[14px] bg-white shadow-[0_1px_4px_rgba(0,0,0,0.06)] flex items-center justify-center text-[20px] border border-black/[0.03]">
                       {app.emoji}
                     </div>
-                    <span className="text-[10px] text-text-secondary">{app.name}</span>
+                    <span className="text-[10px] text-text-secondary/60 font-medium">{app.name}</span>
                   </div>
                 ))}
               </div>
@@ -190,11 +198,9 @@ export default function App() {
           </div>
         )}
 
-        {/* Feed Screen with optional overlays */}
         {(screen === 'feed' || screen === 'drift' || screen === 'alternatives') && (
           <div className="h-full relative">
             <MockAppFeed sessionTime={simulatedTime} intent={intent} />
-
             {screen === 'drift' && (
               <DriftNudge
                 intent={intent}
@@ -204,7 +210,6 @@ export default function App() {
                 onSaveForLater={handleDriftSave}
               />
             )}
-
             {screen === 'alternatives' && (
               <AlternativeSuggestions
                 onSelect={handleAltSelect}
@@ -214,7 +219,6 @@ export default function App() {
           </div>
         )}
 
-        {/* Confirmation */}
         {screen === 'confirmation' && (
           <ConfirmationScreen
             selectedAlternative={selectedAlt}
@@ -222,34 +226,26 @@ export default function App() {
           />
         )}
 
-        {/* Insights */}
         {screen === 'insights' && (
           <WeeklyInsights onRestart={handleRestart} />
         )}
       </PhoneFrame>
 
       {/* Flow indicator */}
-      <div className="mt-6 flex items-center gap-2">
-        {['lock', 'intent', 'feed', 'drift', 'alternatives', 'confirmation', 'insights'].map((step) => (
-          <div key={step} className="flex items-center gap-2">
-            <div
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                screen === step
-                  ? 'bg-primary w-6'
-                  : 'bg-gray-400/40'
-              }`}
-            />
-          </div>
+      <div className="mt-7 flex items-center gap-[6px]">
+        {STEPS.map((step) => (
+          <div
+            key={step}
+            className={`h-[5px] rounded-full transition-all duration-400 ${
+              screen === step
+                ? 'bg-primary w-[22px]'
+                : 'bg-gray-300/50 w-[5px]'
+            }`}
+          />
         ))}
       </div>
-      <p className="text-xs text-gray-400 mt-2 capitalize">
-        {screen === 'lock' && 'Tap fingerprint to unlock'}
-        {screen === 'intent' && 'Select your intent'}
-        {screen === 'feed' && `Browsing... (drift at ${DRIFT_TRIGGER}s, limit at ${LIMIT_TRIGGER}s)`}
-        {screen === 'drift' && 'Drift detected — choose an action'}
-        {screen === 'alternatives' && 'Usage limit reached — explore alternatives'}
-        {screen === 'confirmation' && 'Great choice!'}
-        {screen === 'insights' && 'Weekly insights dashboard'}
+      <p className="text-[11px] text-gray-400/80 mt-2.5 font-medium">
+        {stepLabels[screen]}
       </p>
     </div>
   );

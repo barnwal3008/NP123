@@ -1,4 +1,4 @@
-import { Signal, Wifi, Battery, BatteryFull } from 'lucide-react';
+import { Signal, Wifi, BatteryFull } from 'lucide-react';
 
 export default function StatusBar() {
   const now = new Date();
@@ -9,12 +9,12 @@ export default function StatusBar() {
   });
 
   return (
-    <div className="flex items-center justify-between px-5 py-1.5 bg-white/80 backdrop-blur-sm text-text text-xs font-medium">
-      <span className="font-semibold text-[13px]">{time}</span>
-      <div className="flex items-center gap-1.5">
-        <Signal size={13} strokeWidth={2.5} />
-        <Wifi size={14} strokeWidth={2.5} />
-        <BatteryFull size={16} strokeWidth={2} />
+    <div className="flex items-center justify-between px-6 py-1 text-text text-[12px] font-semibold tracking-tight">
+      <span>{time}</span>
+      <div className="flex items-center gap-[5px]">
+        <Signal size={12} strokeWidth={2.5} />
+        <Wifi size={13} strokeWidth={2.5} />
+        <BatteryFull size={15} strokeWidth={2} />
       </div>
     </div>
   );
