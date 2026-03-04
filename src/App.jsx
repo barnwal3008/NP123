@@ -42,6 +42,7 @@ export default function App() {
   const [selectedAlt, setSelectedAlt] = useState(null);
   const [activeTab, setActiveTab] = useState('home');
   const [driftDismissed, setDriftDismissed] = useState(false);
+  const [altDismissed, setAltDismissed] = useState(false);
   const timerRef = useRef(null);
 
   const startTimer = useCallback(() => {
@@ -63,14 +64,14 @@ export default function App() {
   }, [stopTimer]);
 
   useEffect(() => {
-    if (screen === 'feed' && sessionTime >= LIMIT_TRIGGER && driftDismissed) {
+    if (screen === 'feed' && sessionTime >= LIMIT_TRIGGER && driftDismissed && !altDismissed) {
       stopTimer();
       setScreen('alternatives');
     } else if (screen === 'feed' && sessionTime >= DRIFT_TRIGGER && !driftDismissed) {
       stopTimer();
       setScreen('drift');
     }
-  }, [sessionTime, screen, driftDismissed, stopTimer]);
+  }, [sessionTime, screen, driftDismissed, altDismissed, stopTimer]);
 
   const handleUnlock = () => setScreen('intent');
 
@@ -79,6 +80,7 @@ export default function App() {
     setScreen('feed');
     setSessionTime(0);
     setDriftDismissed(false);
+    setAltDismissed(false);
     startTimer();
   };
 
@@ -87,6 +89,7 @@ export default function App() {
     setScreen('feed');
     setSessionTime(0);
     setDriftDismissed(false);
+    setAltDismissed(false);
     startTimer();
   };
 
@@ -115,6 +118,7 @@ export default function App() {
   };
 
   const handleAltDismiss = () => {
+    setAltDismissed(true);
     setScreen('feed');
     startTimer();
   };
@@ -132,6 +136,7 @@ export default function App() {
     setSelectedAlt(null);
     setActiveTab('home');
     setDriftDismissed(false);
+    setAltDismissed(false);
   };
 
   const handleTabChange = (tab) => {
