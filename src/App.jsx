@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { RotateCcw } from 'lucide-react';
 import PhoneFrame from './components/PhoneFrame';
 import LockScreen from './components/LockScreen';
 import IntentPrompt from './components/IntentPrompt';
@@ -253,6 +254,17 @@ export default function App() {
       <p className="text-[10px] text-gray-400/70 mt-2 font-medium">
         {stepLabels[screen]}
       </p>
+
+      {/* Restart button — visible when past the lock screen */}
+      {screen !== 'lock' && (
+        <button
+          onClick={handleRestart}
+          className="mt-4 flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/80 hover:bg-white text-gray-500 hover:text-gray-700 text-[11px] font-medium transition-all duration-200 shadow-[0_1px_4px_rgba(0,0,0,0.06)] active:scale-[0.97]"
+        >
+          <RotateCcw size={12} strokeWidth={2.2} />
+          Restart Demo
+        </button>
+      )}
     </div>
   );
 }
