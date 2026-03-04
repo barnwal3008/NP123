@@ -147,7 +147,8 @@ export default function App() {
   };
 
   const simulatedTime = sessionTime * TIME_MULTIPLIER;
-  const showNav = !['lock', 'intent'].includes(screen);
+  const hasOverlay = screen === 'drift' || screen === 'alternatives';
+  const showNav = !['lock', 'intent'].includes(screen) && !hasOverlay;
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-[#eceef0]">
