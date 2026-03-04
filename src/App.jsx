@@ -28,9 +28,9 @@ const STEPS = ['lock', 'intent', 'feed', 'drift', 'alternatives', 'confirmation'
 const stepLabels = {
   lock: 'Tap fingerprint to unlock',
   intent: 'Select your intent',
-  feed: `Browsing... (nudge at ${DRIFT_TRIGGER}s, limit at ${LIMIT_TRIGGER}s)`,
+  feed: `Browsing… (nudge at ${DRIFT_TRIGGER}s, limit at ${LIMIT_TRIGGER}s)`,
   drift: 'Drift detected — choose an action',
-  alternatives: 'Usage limit reached — explore alternatives',
+  alternatives: 'Usage limit — explore alternatives',
   confirmation: 'Great choice!',
   insights: 'Weekly insights dashboard',
 };
@@ -150,18 +150,18 @@ export default function App() {
   const showNav = !['lock', 'intent'].includes(screen);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-[#eceef0]">
+    <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-[#eceef0]">
       {/* Title */}
-      <div className="mb-7 text-center">
-        <div className="flex items-center justify-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
-            <span className="text-white text-sm">✦</span>
+      <div className="mb-5 text-center">
+        <div className="flex items-center justify-center gap-1.5">
+          <div className="w-6 h-6 rounded-md bg-primary flex items-center justify-center">
+            <span className="text-white text-[11px]">✦</span>
           </div>
-          <h1 className="text-[22px] font-bold text-gray-800 tracking-tight">
+          <h1 className="text-[18px] font-bold text-gray-800 tracking-tight">
             Intent Assist
           </h1>
         </div>
-        <p className="text-[12px] text-gray-400 mt-1.5 font-medium tracking-wide">Digital Wellbeing Prototype</p>
+        <p className="text-[10px] text-gray-400 mt-1 font-medium">Digital Wellbeing Prototype</p>
       </div>
 
       <PhoneFrame activeTab={activeTab} onTabChange={handleTabChange} showNav={showNav}>
@@ -170,11 +170,11 @@ export default function App() {
         )}
 
         {screen === 'intent' && (
-          <div className="h-full bg-[#f8f9fa] relative">
-            <div className="px-5 pt-5">
-              <p className="text-[13px] text-text-secondary/70 font-medium">Good {getGreeting()},</p>
-              <h2 className="text-[19px] font-semibold text-text mt-0.5">Welcome back 👋</h2>
-              <div className="grid grid-cols-4 gap-x-5 gap-y-4 mt-6">
+          <div className="h-full bg-[#f8f9fa] relative overflow-hidden">
+            <div className="px-5 pt-4">
+              <p className="text-[12px] text-text-secondary/60 font-medium">Good {getGreeting()},</p>
+              <h2 className="text-[17px] font-semibold text-text mt-0.5">Welcome back 👋</h2>
+              <div className="grid grid-cols-4 gap-x-4 gap-y-3.5 mt-5">
                 {[
                   { emoji: '💬', name: 'Messages' },
                   { emoji: '📷', name: 'Camera' },
@@ -185,11 +185,11 @@ export default function App() {
                   { emoji: '📞', name: 'Phone' },
                   { emoji: '⚙️', name: 'Settings' },
                 ].map((app) => (
-                  <div key={app.name} className="flex flex-col items-center gap-[6px]">
-                    <div className="w-[50px] h-[50px] rounded-[14px] bg-white shadow-[0_1px_4px_rgba(0,0,0,0.06)] flex items-center justify-center text-[20px] border border-black/[0.03]">
+                  <div key={app.name} className="flex flex-col items-center gap-1">
+                    <div className="w-[46px] h-[46px] rounded-[12px] bg-white shadow-[0_1px_3px_rgba(0,0,0,0.05)] flex items-center justify-center text-[18px]">
                       {app.emoji}
                     </div>
-                    <span className="text-[10px] text-text-secondary/60 font-medium">{app.name}</span>
+                    <span className="text-[9px] text-text-secondary/50 font-medium truncate max-w-[46px]">{app.name}</span>
                   </div>
                 ))}
               </div>
@@ -199,7 +199,7 @@ export default function App() {
         )}
 
         {(screen === 'feed' || screen === 'drift' || screen === 'alternatives') && (
-          <div className="h-full relative">
+          <div className="h-full relative overflow-hidden">
             <MockAppFeed sessionTime={simulatedTime} intent={intent} />
             {screen === 'drift' && (
               <DriftNudge
@@ -232,19 +232,19 @@ export default function App() {
       </PhoneFrame>
 
       {/* Flow indicator */}
-      <div className="mt-7 flex items-center gap-[6px]">
+      <div className="mt-5 flex items-center gap-[5px]">
         {STEPS.map((step) => (
           <div
             key={step}
-            className={`h-[5px] rounded-full transition-all duration-400 ${
+            className={`h-[4px] rounded-full transition-all duration-300 ${
               screen === step
-                ? 'bg-primary w-[22px]'
-                : 'bg-gray-300/50 w-[5px]'
+                ? 'bg-primary w-5'
+                : 'bg-gray-300/40 w-[4px]'
             }`}
           />
         ))}
       </div>
-      <p className="text-[11px] text-gray-400/80 mt-2.5 font-medium">
+      <p className="text-[10px] text-gray-400/70 mt-2 font-medium">
         {stepLabels[screen]}
       </p>
     </div>

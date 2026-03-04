@@ -9,7 +9,7 @@ export default function BottomNav({ activeTab, onTabChange }) {
   ];
 
   return (
-    <div className="flex items-center justify-around bg-white/95 backdrop-blur-sm border-t border-black/[0.04] px-1 pt-1 pb-0.5">
+    <div className="flex items-center justify-around bg-white border-t border-black/[0.04] px-2 pt-1 pb-0.5">
       {tabs.map((tab) => {
         const Icon = tab.icon;
         const isActive = activeTab === tab.id;
@@ -17,16 +17,16 @@ export default function BottomNav({ activeTab, onTabChange }) {
           <button
             key={tab.id}
             onClick={() => onTabChange(tab.id)}
-            className={`flex flex-col items-center gap-[2px] px-4 py-1 rounded-2xl transition-all duration-250 ${
+            className={`flex flex-col items-center gap-0 px-3 py-0.5 rounded-2xl transition-all duration-200 ${
               isActive
                 ? 'text-primary'
-                : 'text-text-secondary/70 hover:text-text-secondary'
+                : 'text-text-secondary/60 hover:text-text-secondary'
             }`}
           >
-            <div className={`px-4 py-[5px] rounded-full transition-all duration-250 ${isActive ? 'bg-primary-light' : ''}`}>
-              <Icon size={18} strokeWidth={isActive ? 2.3 : 1.7} />
+            <div className={`px-3 py-[3px] rounded-full transition-all duration-200 ${isActive ? 'bg-primary-light' : ''}`}>
+              <Icon size={18} strokeWidth={isActive ? 2.2 : 1.7} />
             </div>
-            <span className={`text-[10px] transition-all duration-250 ${isActive ? 'font-semibold' : 'font-medium'}`}>
+            <span className={`text-[9px] leading-tight transition-all duration-200 ${isActive ? 'font-semibold' : 'font-medium'}`}>
               {tab.label}
             </span>
           </button>
