@@ -9,9 +9,9 @@ export default function StatusBar() {
   });
 
   return (
-    <div className="flex items-center justify-between px-6 py-1 text-text text-[12px] font-semibold tracking-tight">
-      <span>{time}</span>
-      <div className="flex items-center gap-[5px]">
+    <div className="flex items-center justify-between px-8 py-1 text-text text-[12px] font-semibold tracking-tight">
+      <span className="min-w-0 truncate">{time}</span>
+      <div className="flex items-center gap-[5px] shrink-0">
         <Signal size={12} strokeWidth={2.5} />
         <Wifi size={13} strokeWidth={2.5} />
         <BatteryFull size={15} strokeWidth={2} />

@@ -15,10 +15,12 @@ export default function PhoneFrame({ children, activeTab, onTabChange, showNav =
       }}
     >
       {/* Dynamic Island notch */}
-      <div className="absolute top-[6px] left-1/2 -translate-x-1/2 w-[90px] h-[22px] bg-black rounded-full z-50" />
+      <div className="absolute top-[10px] left-1/2 -translate-x-1/2 w-[100px] h-[26px] bg-black rounded-full z-50">
+        <div className="absolute top-[9px] left-[30px] w-[8px] h-[8px] rounded-full bg-gray-800 ring-1 ring-gray-700" />
+      </div>
 
-      {/* Status Bar */}
-      <div className="pt-[30px] relative z-40 shrink-0">
+      {/* Status Bar — pushed below the notch */}
+      <div className="pt-[40px] relative z-40 shrink-0">
         <StatusBar />
       </div>
 
